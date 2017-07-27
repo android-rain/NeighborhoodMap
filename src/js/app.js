@@ -1,11 +1,9 @@
 (function () {
     'use strict';
-    var $ = require("jQuery");
-    var ko = require('knockout');
 
     // Filter, Sidebar
      var initialText = [
-        {marker:"Hello Browserify"},
+        {hello:"Hello Browserify"},
         {hello:"Hello Fast"},
         {hello:"Hello Boundle"},
         {hello:"Hello API"},
@@ -18,6 +16,7 @@
         this.textList = ko.observableArray([]);
         initialText.forEach(function(textItem) {
             self.textList.push(new Text(textItem));
+            console.log("add a list");
         });
 
         this.currentText = ko.observable(this.textList()[0]);

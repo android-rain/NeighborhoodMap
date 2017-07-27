@@ -57,3 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
+# Libraries: jquery, knockout
+jquery-3.2.1.js
+knockout-3.4.2.js
