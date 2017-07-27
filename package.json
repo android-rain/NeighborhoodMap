@@ -1,0 +1,50 @@
+{
+  "name": "neighborhoodmap",
+  "version": "0.0.1",
+  "description": "front_end_development_project_3\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[Cadvance_project_3",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/android-rain/NeighborhoodMap.git"
+  },
+  "keywords": [
+    "googlemapapi"
+  ],
+  "author": "yun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/android-rain/NeighborhoodMap/issues"
+  },
+  "homepage": "https://github.com/android-rain/NeighborhoodMap#readme",
+  "dependencies": {
+    "browser-sync": "^2.18.13",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-jshint": "^2.0.4",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-minify-html": "^1.0.6",
+    "imagemin-mozjpeg": "^6.0.0",
+    "jshint": "^2.9.5"
+  },
+  "devDependencies": {
+    "browserify": "^14.4.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-size": "^2.1.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "jquery": "^3.2.1",
+    "knockout": "^3.4.2",
+    "lodash.assign": "^4.2.0",
+    "node-sass": "file:node_modules\\node-sass",
+    "require-dir": "^0.3.2",
+    "run-sequence": "^2.0.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.9.0"
+  }
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NeighborhoodMap</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            margin: 0;
+            padding: 1em;
+            height: 100%;
+        }
+
+        .side {
+            width: 20%;
+            padding: 1em;
+        }
+
+        #map {
+            width: 80%;
+            height: 100%;
+            padding: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="side"></div>
+        <div id="map"></div>
+    </div>
+
+    <script src="js/bundle.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAezkTq6uffoi4FZ8JHckufbYg4WMZ1RiI&callback=initMap"
+    async defer></script>
+</body>
+</html>
