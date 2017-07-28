@@ -27,6 +27,7 @@
       width: 20%;
       /*display: flex;*/
       padding: 5px;
+      /*background-color: black;*/
     }
 
     #map {
@@ -49,8 +50,10 @@
     }
 
     li {
-      background-color: rgba(119, 224, 23, 0.35);
-      margin: 1px auto;
+      /*background-color: rgba(119, 224, 23, 0.35);*/
+      cursor: pointer;
+      margin: 0px 10px 20px 10px;
+      color: rgba(200, 200, 200, 0.9);
     }
 
   </style>
@@ -59,9 +62,13 @@
 <body>
   <div class="container">
     <div class="side">
-      <input type="text" id="searchBox" placeholder="Enter your favourite view">
-      <ul id="markersList" data-bind="foreach: textList">
-        <li data-bind="text: hello"></li>
+      <form class="search" data-bind="submit: filter">
+        <input type="text" id="searchBox"  type="submit" data-bind="textInput: searchLocation,  attr: {placeholder: searchLocation()} ">
+        <!-- <button type="submit">Submit</button> -->
+      </form>
+
+      <ul id="markersList" data-bind="foreach: locationArray">
+        <li data-bind="text: name, click: $parent.markThis, style: {display: show()? 'list-item':'none'}"></li>
       </ul>
     </div>
     <div id="map"></div>
