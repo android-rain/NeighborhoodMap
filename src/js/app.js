@@ -79,7 +79,7 @@
       self.searchLocation(marker.name());
     };
     // 筛选列表
-    // TODO：筛选的时候如何自动同步，现在需要submit（回车），用户体验不好
+    // TODO：筛选的时候如何自动同步，现在需要submit（回车），用户体验不好。
     this.filter = function() {
       // self.searchLocation();
       var text = self.searchLocation();
