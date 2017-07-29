@@ -54,7 +54,7 @@
       name: "音乐喷泉",
       lat: 30.254327,
       lng: 120.160695,
-      show: false,
+      show: true,
     },
   ];
 
@@ -84,17 +84,27 @@
       // self.searchLocation();
       var text = self.searchLocation();
 
-      self.locationArray().forEach(function(location) {
+      self.locationArray().forEach(function(location, i) {
         if(location.name().includes(text)) {
           // TODO
           self.show(location);
+          locations[i].show = true;
         }
         else {
           self.hide(location);
+          locations[i].show = false;
         }
       });
+        self.test();
     };
-
+    this.test = function() {
+        locations.forEach(function(location) {
+            console.log("ob: "+location.show);
+        });
+        self.locationArray().forEach(function(location) {
+            console.log("ko: "+location.show());
+        });
+    };
     this.show = function(marker) {
       marker.show(true);
     };
@@ -108,29 +118,65 @@
 
   // Google Map View
 
-  // window.initMap = function() {
-  //     // 创建一个坐标
-  //     var duanQiao = {lat: 30.25929, lng: 120.151935};
-  //     // 创建地图对象，指定显示地图的DOM元素
-  //     var map = new google.maps.Map(document.getElementById('map'), {
-  //         center: duanQiao,
-  //         zoom: 14,
-  //         scroll: false,
-  //     });
+  window.initMap = function() {
+      // 创建一个坐标
+      var duanQiao = {lat: 30.25929, lng: 120.151935};
+      // 创建地图对象，指定显示地图的DOM元素
+      var map = new google.maps.Map(document.getElementById('map'), {
+          center: duanQiao,
+          zoom: 14,
+          scroll: false,
+      });
 
-  //     // 创建一个marker对象
-  //     var marker = new google.maps.Marker({
-  //         position: duanQiao,
-  //         map: map
-  //     });
+      // 创建一个marker对象
+      // var marker = new google.maps.Marker({
+      //     position: duanQiao,
+      //     map: map
+      // });
 
-  //     var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  //     var markers = locations.map(function(location, i) {
-  //         return new google.maps.Marker({
-  //             position: location,
-  //             map: map,
-  //             label: labels[i % labels.length]
-  //         });
-  //     });
-  // };
+      // 显示所有markers
+      var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      var markers = locations.map(function(location, i) {
+          return new google.maps.Marker({
+              position: location,
+              map: map,
+              label: labels[i % labels.length]
+          });
+      });
+
+      //
+      $("#search").submit(function() {
+        locations.forEach(function(location, i) {
+            console.log(location.show);
+            if(!location.show) {
+                hideMaker(markers[i]);
+            }
+            else {
+                showMarker(markers[i]);
+            }
+        });
+      });
+
+      var hideMaker = function(marker) {
+        marker.setMap(null);
+      };
+      var showMarker = function(marker) {
+        marker.setMap(map);
+      };
+      var hideMakers = function(markers) {
+            for (var i = 0; i < marker.length; i++) {
+                        marker[i].setMap(null);
+                    }
+      };
+
+      var showListings = function() {
+        var bounds = new google.map.LatLngBounds();
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(map);
+            bounds.extend(markers[i].position);
+        }
+        map.fitBounds(bounds);
+      };
+
+  };
 })();
