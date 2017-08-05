@@ -140,9 +140,20 @@
           return new google.maps.Marker({
               position: location,
               map: map,
-              label: labels[i % labels.length]
+              label: labels[i % labels.length],
+              animation: google.maps.Animation.DROP
           });
       });
+      // show infowindow
+      var infowindow = new google.maps.InfoWindow({
+        content: "test",
+      });
+      for(var i = 0; i < markers.length; i++){
+        markers[i].addListener('click', function(){
+            infowindow.open(map, this);
+        });
+      }
+
 
       //
       $("#search").submit(function() {
@@ -177,6 +188,9 @@
         }
         map.fitBounds(bounds);
       };
+
+
+
 
   };
 })();
