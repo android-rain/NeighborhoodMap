@@ -2,6 +2,7 @@
     'use strict';
 
     // Sidebar  *************START
+    // 地址数组
     var locations = [{
             name: "断桥残雪",
             lat: 30.25929,
@@ -57,7 +58,7 @@
             show: true,
         },
     ];
-
+    // 绑定地址所有属性
     var Location = function(data) {
         this.name = ko.observable(data.name);
         this.lat = ko.observable(data.lat);
@@ -66,22 +67,24 @@
     };
     var ViewModel = function() {
         var self = this;
+        // 双向绑定所有地址
         this.locationArray = ko.observableArray([]);
         locations.forEach(function(location) {
             self.locationArray.push(new Location(location));
         });
 
 
-        // placeholder 更新
+        // 搜索框 placeholder 更新
         this.searchLocation = ko.observable("");
         // 处理列表点击事件
         this.markThis = function(marker) {
+
             self.searchLocation(marker.name());
             // 在手机上点击列表中的一个地点后，隐藏列表
             self.hideList();
         };
         // 筛选列表
-        // TODO：筛选的时候如何自动同步，现在需要submit（回车），用户体验不好。
+        // TODO：搜索框输入文字的时候如何同步筛选列表项？现在需要submit（回车），用户体验不好。
         this.filter = function() {
             // self.searchLocation();
             var text = self.searchLocation();
@@ -98,6 +101,7 @@
             });
             // self.test();
         };
+        // 测试用
         this.test = function() {
             locations.forEach(function(location) {
                 console.log("ob: " + location.show);
@@ -106,10 +110,11 @@
                 console.log("ko: " + location.show());
             });
         };
+        // 显示列表项
         this.show = function(marker) {
             marker.show(true);
         };
-
+        // 隐藏列表项
         this.hide = function(marker) {
             marker.show(false);
         };
@@ -117,6 +122,7 @@
         var sideStyle = $(".side");
         var mapStyle = $("#map");
         var headStyle = $("#head");
+        // 显示搜索列表
         this.displayList = function() {
             sideStyle.css({
                 "display": "block",
@@ -126,6 +132,7 @@
                 "width": "45%"
             });
         };
+        // 隐藏搜索列表
         this.hideList = function() {
             console.log(headStyle.css("display"));
             if (headStyle.css("display") === "block") {
@@ -144,8 +151,7 @@
     ko.applyBindings(new ViewModel());
     // Sidebar  *************END
 
-    // Google Map View
-
+    // Google Map View ************START
     window.initMap = function() {
         // 创建一个坐标
         var duanQiao = { lat: 30.25929, lng: 120.151935 };
@@ -155,12 +161,6 @@
             zoom: 14,
             scroll: false,
         });
-
-        // 创建一个marker对象
-        // var marker = new google.maps.Marker({
-        //     position: duanQiao,
-        //     map: map
-        // });
 
         // 显示所有markers
         var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -173,20 +173,11 @@
                 icon: defaultIcon
             });
         });
-        // show infowindow
         var infowindow = new google.maps.InfoWindow();
-        // Style the markers a bit. This will be our listing marker icon.
-        var defaultIcon = makeMarkerIcon('0091ff');
-
-        // Create a "highlighted location" marker color for when the user
-        // mouses over the marker.
-        var highlightedIcon = makeMarkerIcon('FFFF24');
         // TODO：google place api
         // var service = new google.maps.places.PlacesService();
         for (var i = 0; i < markers.length; i++) {
             markers[i].addListener('click', function() {
-                // set icon
-                // this.setIcon(highlightedIcon);
                 var that = this;
                 toggleBounce(that);
                 // load weather
@@ -195,6 +186,7 @@
             });
         }
 
+        // 点击列表项，对应marker跳动并显示infowindow
         $("#markersList li").click(function() {
             var idx = $(this).index();
             toggleBounce(markers[idx]);
@@ -202,6 +194,8 @@
             infowindow.open(map, markers[idx]);
         });
 
+        // 使用聚合 api，获取天气数据
+        // 注意：由于景点天气收费，暂时使用城市天气替代
         function weather() {
             var weatherRequestTimeout = setTimeout(function() {
                 console.log("The Weather Could not be loaded");
@@ -224,20 +218,7 @@
             });
         }
 
-        // This function takes in a COLOR, and then creates a new marker
-        // icon of that color. The icon will be 21 px wide by 34 high, have an origin
-        // of 0, 0 and be anchored at 10, 34).
-        function makeMarkerIcon(markerColor) {
-            var markerImage = new google.maps.MarkerImage(
-                'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|' + markerColor +
-                '|40|_|%E2%80%A2',
-                new google.maps.Size(21, 34),
-                new google.maps.Point(0, 0),
-                new google.maps.Point(10, 34),
-                new google.maps.Size(21, 34));
-            return markerImage;
-        }
-
+        // marker 跳动函数
         function toggleBounce(marker) {
             if (marker.getAnimation() !== null) {
                 marker.setAnimation(null);
@@ -248,7 +229,7 @@
         }
         // **************************infowindow END**************************************
 
-        //
+        // 搜索栏提交搜索后，显示搜索结果中的markers
         $("#search").submit(function() {
             locations.forEach(function(location, i) {
                 if (!location.show) {
@@ -258,19 +239,15 @@
                 }
             });
         });
-
+        // 隐藏marker
         var hideMaker = function(marker) {
             marker.setMap(null);
         };
+        // 显示marker
         var showMarker = function(marker) {
             marker.setMap(map);
         };
-        var hideMakers = function(markers) {
-            for (var i = 0; i < marker.length; i++) {
-                marker[i].setMap(null);
-            }
-        };
-
+        // TODO：点击列表项，地图上对应的marker居中
         var showListings = function() {
             var bounds = new google.map.LatLngBounds();
             for (var i = 0; i < markers.length; i++) {
@@ -280,7 +257,7 @@
             map.fitBounds(bounds);
         };
 
-        //
+        // GOOGLE MAP **************END
 
 
     };
