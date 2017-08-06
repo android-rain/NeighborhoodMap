@@ -77,6 +77,8 @@
         // 处理列表点击事件
         this.markThis = function(marker) {
             self.searchLocation(marker.name());
+            // 在手机上点击列表中的一个地点后，隐藏列表
+            self.hideList();
         };
         // 筛选列表
         // TODO：筛选的时候如何自动同步，现在需要submit（回车），用户体验不好。
@@ -94,7 +96,7 @@
                     locations[i].show = false;
                 }
             });
-            self.test();
+            // self.test();
         };
         this.test = function() {
             locations.forEach(function(location) {
@@ -110,6 +112,33 @@
 
         this.hide = function(marker) {
             marker.show(false);
+        };
+
+        var sideStyle = $(".side");
+        var mapStyle = $("#map");
+        var headStyle = $("#head");
+        this.displayList = function() {
+            sideStyle.css({
+                "display": "block",
+                "width": "50%",
+            });
+            mapStyle.css({
+                "width": "45%"
+            });
+        };
+        this.hideList = function() {
+            console.log(headStyle.css("display"));
+            if (headStyle.css("display") === "block") {
+
+                sideStyle.css({
+                    "display": "none",
+                    "width": "15%"
+                });
+                mapStyle.css({
+                    "width": "100%"
+                });
+            }
+
         };
     };
     ko.applyBindings(new ViewModel());
@@ -166,32 +195,33 @@
             });
         }
 
-        $("#markersList li").click(function(){
+        $("#markersList li").click(function() {
             var idx = $(this).index();
             toggleBounce(markers[idx]);
             weather();
             infowindow.open(map, markers[idx]);
         });
+
         function weather() {
             var weatherRequestTimeout = setTimeout(function() {
-                    console.log("The Weather Could not be loaded");
-                }, 4000);
-                $.ajax({
-                    url: 'http://v.juhe.cn/weather/index',
-                    data: { cityname: '杭州', format: "1", dtype: 'json', key: "e0f4519563af0c7d6da21b41f7132642" },
-                    dataType: 'jsonp',
-                    success: function(data) {
-                        var sk = data.result.sk;
-                        var temp = sk.temp;
-                        var wind = sk.wind_strength;
-                        var humidity = sk.humidity;
-                        infowindow.setContent(`<div id="weather"><p>温度： ${temp}</p><p>风力： ${wind}</p><p>湿度：${humidity}</p></div>`);
-                        // for (var ele of data[1]) {
-                        //     console.log(ele);
-                        // $wikiElem.append(`<li class="article"><a href="https://en.wikipedia.org/wiki/${ele}">${ele}</a></li>`);
-                        clearTimeout(weatherRequestTimeout);
-                    },
-                });
+                console.log("The Weather Could not be loaded");
+            }, 4000);
+            $.ajax({
+                url: 'http://v.juhe.cn/weather/index',
+                data: { cityname: '杭州', format: "1", dtype: 'json', key: "e0f4519563af0c7d6da21b41f7132642" },
+                dataType: 'jsonp',
+                success: function(data) {
+                    var sk = data.result.sk;
+                    var temp = sk.temp;
+                    var wind = sk.wind_strength;
+                    var humidity = sk.humidity;
+                    infowindow.setContent(`<div id="weather"><p>温度： ${temp}</p><p>风力： ${wind}</p><p>湿度：${humidity}</p></div>`);
+                    // for (var ele of data[1]) {
+                    //     console.log(ele);
+                    // $wikiElem.append(`<li class="article"><a href="https://en.wikipedia.org/wiki/${ele}">${ele}</a></li>`);
+                    clearTimeout(weatherRequestTimeout);
+                },
+            });
         }
 
         // This function takes in a COLOR, and then creates a new marker
@@ -213,7 +243,7 @@
                 marker.setAnimation(null);
             } else {
                 marker.setAnimation(google.maps.Animation.BOUNCE);
-                setTimeout(function(){marker.setAnimation(null);}, 2800);
+                setTimeout(function() { marker.setAnimation(null); }, 2800);
             }
         }
         // **************************infowindow END**************************************
