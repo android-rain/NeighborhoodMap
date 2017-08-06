@@ -161,7 +161,19 @@
                 var that = this;
                 toggleBounce(that);
                 // load weather
-                var weatherRequestTimeout = setTimeout(function() {
+                weather();
+                infowindow.open(map, this);
+            });
+        }
+
+        $("#markersList li").click(function(){
+            var idx = $(this).index();
+            toggleBounce(markers[idx]);
+            weather();
+            infowindow.open(map, markers[idx]);
+        });
+        function weather() {
+            var weatherRequestTimeout = setTimeout(function() {
                     console.log("The Weather Could not be loaded");
                 }, 4000);
                 $.ajax({
@@ -179,10 +191,9 @@
                         // $wikiElem.append(`<li class="article"><a href="https://en.wikipedia.org/wiki/${ele}">${ele}</a></li>`);
                         clearTimeout(weatherRequestTimeout);
                     },
-                })
-                infowindow.open(map, this);
-            });
+                });
         }
+
         // This function takes in a COLOR, and then creates a new marker
         // icon of that color. The icon will be 21 px wide by 34 high, have an origin
         // of 0, 0 and be anchored at 10, 34).
@@ -210,7 +221,6 @@
         //
         $("#search").submit(function() {
             locations.forEach(function(location, i) {
-                console.log(location.show);
                 if (!location.show) {
                     hideMaker(markers[i]);
                 } else {
@@ -240,7 +250,7 @@
             map.fitBounds(bounds);
         };
 
-
+        //
 
 
     };
