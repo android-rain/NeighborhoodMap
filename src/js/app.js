@@ -140,16 +140,28 @@
                 position: location,
                 map: map,
                 label: labels[i % labels.length],
-                animation: google.maps.Animation.DROP
+                animation: google.maps.Animation.DROP,
+                icon: defaultIcon
             });
         });
         // show infowindow
         var infowindow = new google.maps.InfoWindow();
+        // Style the markers a bit. This will be our listing marker icon.
+        var defaultIcon = makeMarkerIcon('0091ff');
+
+        // Create a "highlighted location" marker color for when the user
+        // mouses over the marker.
+        var highlightedIcon = makeMarkerIcon('FFFF24');
+        // TODO：google place api
+        // var service = new google.maps.places.PlacesService();
         for (var i = 0; i < markers.length; i++) {
             markers[i].addListener('click', function() {
-
+                // set icon
+                // this.setIcon(highlightedIcon);
+                var that = this;
+                toggleBounce(that);
                 // load weather
-                var weatherRequestTimeout = setTimeout(function(){
+                var weatherRequestTimeout = setTimeout(function() {
                     console.log("Relevant Wikipedia Links Could not be loaded");
                 }, 4000);
                 $.ajax({
@@ -171,7 +183,29 @@
                 infowindow.open(map, this);
             });
         }
+        // This function takes in a COLOR, and then creates a new marker
+        // icon of that color. The icon will be 21 px wide by 34 high, have an origin
+        // of 0, 0 and be anchored at 10, 34).
+        function makeMarkerIcon(markerColor) {
+            var markerImage = new google.maps.MarkerImage(
+                'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|' + markerColor +
+                '|40|_|%E2%80%A2',
+                new google.maps.Size(21, 34),
+                new google.maps.Point(0, 0),
+                new google.maps.Point(10, 34),
+                new google.maps.Size(21, 34));
+            return markerImage;
+        }
 
+        function toggleBounce(marker) {
+            if (marker.getAnimation() !== null) {
+                marker.setAnimation(null);
+            } else {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+                setTimeout(function(){marker.setAnimation(null);}, 2800);
+            }
+        }
+        // **************************infowindow END**************************************
 
         //
         $("#search").submit(function() {
