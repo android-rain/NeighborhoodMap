@@ -162,7 +162,7 @@
                 toggleBounce(that);
                 // load weather
                 var weatherRequestTimeout = setTimeout(function() {
-                    console.log("Relevant Wikipedia Links Could not be loaded");
+                    console.log("The Weather Could not be loaded");
                 }, 4000);
                 $.ajax({
                     url: 'http://v.juhe.cn/weather/index',
