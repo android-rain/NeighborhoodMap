@@ -261,4 +261,8 @@
 
 
     };
+
+    window.mapErrorHandler = function() {
+        alert("载入Google地图错误!");
+    };
 })();
