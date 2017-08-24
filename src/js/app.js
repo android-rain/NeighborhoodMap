@@ -81,7 +81,7 @@
 
             self.searchLocation(marker.name());
             // 在手机上点击列表中的一个地点后，隐藏列表
-            self.hideList();
+            self.displayList();
         };
         // 筛选列表
         // TODO：搜索框输入文字的时候如何同步筛选列表项？现在需要submit（回车），用户体验不好。
@@ -119,34 +119,47 @@
             marker.show(false);
         };
 
-        var sideStyle = $(".side");
-        var mapStyle = $("#map");
-        var headStyle = $("#head");
-        // 显示搜索列表
+        this.clientWidth = ko.observable(document.body.clientWidth);
+        // this.hideSide = ko.pureComputed(function() {
+        //     return self.clientWidth() < 640 ? "hide-menu" : "";
+        // }, this);
+        this.hideSide = ko.observable("hide-menu");
         this.displayList = function() {
-            sideStyle.css({
-                "display": "block",
-                "width": "50%",
-            });
-            mapStyle.css({
-                "width": "45%"
-            });
-        };
-        // 隐藏搜索列表
-        this.hideList = function() {
-            console.log(headStyle.css("display"));
-            if (headStyle.css("display") === "block") {
-
-                sideStyle.css({
-                    "display": "none",
-                    "width": "15%"
-                });
-                mapStyle.css({
-                    "width": "100%"
-                });
+            if(this.hideSide() == "hide-menu") {
+                this.hideSide("");
             }
-
+            else {
+                this.hideSide("hide-menu");
+            }
         };
+        // var sideStyle = $(".side");
+        // var mapStyle = $("#map");
+        // var headStyle = $("#head");
+        // // 显示搜索列表
+        // this.displayList = function() {
+        //     sideStyle.css({
+        //         "display": "block",
+        //         "width": "50%",
+        //     });
+        //     mapStyle.css({
+        //         "width": "45%"
+        //     });
+        // };
+        // // 隐藏搜索列表
+        // this.hideList = function() {
+        //     console.log(headStyle.css("display"));
+        //     if (headStyle.css("display") === "block") {
+
+        //         sideStyle.css({
+        //             "display": "none",
+        //             "width": "15%"
+        //         });
+        //         mapStyle.css({
+        //             "width": "100%"
+        //         });
+        //     }
+
+        // };
     };
     ko.applyBindings(new ViewModel());
     // Sidebar  *************END
