@@ -75,7 +75,7 @@
 
 
         // 搜索框 placeholder 更新
-        this.searchLocation = ko.observable("");
+        this.searchLocation = ko.observable("搜索");
         // 处理列表点击事件
         this.markThis = function(marker) {
 
@@ -123,7 +123,7 @@
         // this.hideSide = ko.pureComputed(function() {
         //     return self.clientWidth() < 640 ? "hide-menu" : "";
         // }, this);
-        this.hideSide = ko.observable("hide-menu");
+        this.hideSide = ko.observable("");
         this.displayList = function() {
             if(this.hideSide() == "hide-menu") {
                 this.hideSide("");
@@ -132,34 +132,6 @@
                 this.hideSide("hide-menu");
             }
         };
-        // var sideStyle = $(".side");
-        // var mapStyle = $("#map");
-        // var headStyle = $("#head");
-        // // 显示搜索列表
-        // this.displayList = function() {
-        //     sideStyle.css({
-        //         "display": "block",
-        //         "width": "50%",
-        //     });
-        //     mapStyle.css({
-        //         "width": "45%"
-        //     });
-        // };
-        // // 隐藏搜索列表
-        // this.hideList = function() {
-        //     console.log(headStyle.css("display"));
-        //     if (headStyle.css("display") === "block") {
-
-        //         sideStyle.css({
-        //             "display": "none",
-        //             "width": "15%"
-        //         });
-        //         mapStyle.css({
-        //             "width": "100%"
-        //         });
-        //     }
-
-        // };
     };
     ko.applyBindings(new ViewModel());
     // Sidebar  *************END
@@ -181,9 +153,8 @@
             return new google.maps.Marker({
                 position: location,
                 map: map,
-                label: labels[i % labels.length],
                 animation: google.maps.Animation.DROP,
-                icon: defaultIcon
+                icon: "http://maps.google.com/mapfiles/marker" + labels[i % labels.length] + ".png"
             });
         });
         var infowindow = new google.maps.InfoWindow();
@@ -210,9 +181,9 @@
         // 使用聚合 api，获取天气数据
         // 注意：由于景点天气收费，暂时使用城市天气替代
         function weather() {
-            var weatherRequestTimeout = setTimeout(function() {
-                console.log("The Weather Could not be loaded");
-            }, 4000);
+            // var weatherRequestTimeout = setTimeout(function() {
+            //     console.log("The Weather Could not be loaded");
+            // }, 4000);
             $.ajax({
                 url: 'http://v.juhe.cn/weather/index',
                 data: { cityname: '杭州', format: "1", dtype: 'json', key: "e0f4519563af0c7d6da21b41f7132642" },
@@ -223,11 +194,12 @@
                     var wind = sk.wind_strength;
                     var humidity = sk.humidity;
                     infowindow.setContent(`<div id="weather"><p>温度： ${temp}</p><p>风力： ${wind}</p><p>湿度：${humidity}</p></div>`);
-                    // for (var ele of data[1]) {
-                    //     console.log(ele);
-                    // $wikiElem.append(`<li class="article"><a href="https://en.wikipedia.org/wiki/${ele}">${ele}</a></li>`);
-                    clearTimeout(weatherRequestTimeout);
+                    // clearTimeout(weatherRequestTimeout);
                 },
+              timeout: 4000,
+              error: function() {
+                alert("获取信息失败");
+              }
             });
         }
 

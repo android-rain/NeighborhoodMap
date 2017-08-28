@@ -8,22 +8,22 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body data-bind= "css: hideSide">
     <div id="head">
         <form id="search" data-bind="submit: filter">
             <input type="text" id="searchBox" type="submit" data-bind="textInput: searchLocation,  attr: {placeholder: searchLocation()} ">
             <!-- <button type="submit">Submit</button> -->
         </form>
-        <button id="displayList" data-bind="click: displayList">显示搜索栏</button>
+        <button id="displayList" data-bind="click: displayList">地点列表</button>
     </div>
-    <div class="container" data-bind= "css: hideSide">
+
         <div class="side">
             <ul id="markersList" data-bind="foreach: locationArray">
                 <li data-bind="text: name, click: $parent.markThis, style: {display: show()? 'list-item':'none'}"></li>
             </ul>
         </div>
-        <div id="map"></div>
-    </div>
+
+    <div id="map"></div>
     <script src="js/jquery-3.2.1.js"></script>
     <script src="js/knockout-3.4.2.js"></script>
     <script src="js/app.js"></script>
